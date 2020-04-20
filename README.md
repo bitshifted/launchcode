@@ -1,2 +1,2 @@
 # launchcode
-native java ;auncher
+Java application launcher
