@@ -6,8 +6,8 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"strings"
 	"runtime"
+	"strings"
 )
 
 const DEFAULT_CONFIG_FILE = "application.xml"
@@ -33,20 +33,20 @@ func LoadConfigFile() *Application {
 	return &application
 }
 
-func FindJvmCommand(application *Application, appDir string) (string,error) {
+func FindJvmCommand(application *Application, appDir string) (string, error) {
 	jvmDir := calculateTargetJvmDir(application, appDir)
 	fmt.Println(jvmDir)
 	// attempt to find java executable
 	javaExecPath := findJavaExecutable(jvmDir)
 	fmt.Printf("java exec path: %s", javaExecPath)
-	
-	return javaExecPath,nil
+
+	return javaExecPath, nil
 
 }
 
 func calculateTargetJvmDir(application *Application, appDir string) string {
 	var jvmDirPath = application.Jvm.JvmDir
-	if(len(jvmDirPath) == 0){
+	if len(jvmDirPath) == 0 {
 		jvmDirPath = "jre"
 	}
 	if filepath.IsAbs(jvmDirPath) {
@@ -56,16 +56,14 @@ func calculateTargetJvmDir(application *Application, appDir string) string {
 
 }
 
-
 func findJavaExecutable(origin string) string {
 	var execName = "java"
-	if(runtime.GOOS == "windows"){
+	if runtime.GOOS == "windows" {
 		execName = "javaw"
 	}
 	return filepath.Join(origin, "bin", execName)
 
 }
-
 
 func GetCmdLineOptions(application *Application) []string {
 	options := make([]string, 0)
@@ -93,7 +91,11 @@ func setModulePath(application *Application) []string {
 
 func setModule(application *Application) []string {
 	if len(application.Jvm.Module) > 0 {
-		return []string{"--module", strings.TrimSpace(application.Jvm.Module)}
+		var builder strings.Builder
+		builder.WriteString(strings.TrimSpace(application.Jvm.Module))
+		builder.WriteString("/")
+		builder.WriteString(strings.TrimSpace(application.Jvm.MainClass))
+		return []string{"--module", builder.String()}
 	}
 	return []string{}
 
@@ -126,6 +128,9 @@ func setArguments(application *Application) []string {
 }
 
 func setMainClass(application *Application) []string {
+	if len(application.Jvm.Jar) > 0 || len(application.Jvm.Module) > 0 {
+		return []string{}
+	}
 	return []string{strings.TrimSpace(application.Jvm.MainClass)}
 }
 
