@@ -38,6 +38,6 @@
             "CharsetID": "04B0"
         }
     },
-    "IconPath": "form.ico",
+    "IconPath": "icons/launchcode.ico",
     "ManifestPath": ""
 }
