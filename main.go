@@ -1,4 +1,4 @@
-//go:generate goversioninfo
+//go:generate goversioninfo -icon=icons/launchcode.ico
 package main
 
 import (
@@ -25,7 +25,7 @@ func main() {
 	// status := client.CheckUpdateStatus(application, httpClient)
 	// fmt.Println(status)
 	jvmPath, err := config.FindJvmCommand(application, appDir)
-	if(err != nil) {
+	if err != nil {
 		fmt.Println("Could not find java command")
 	}
 	fmt.Println(jvmPath)
