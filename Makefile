@@ -1,10 +1,12 @@
 
 DIST_DIR=$(PWD)/dist
 EXE_NAME=launchcode
+GOPATH=$HOME/go
 
 all: clean build-linux build-mac build-windows
 
 init: 
+	go install github.com/josephspurrier/goversioninfo/cmd/goversioninfo
 	mkdir -p ${DIST_DIR}
 
 build-linux: init
@@ -15,9 +17,9 @@ build-mac: init
 	env GOOS=darwin  GOARCH=amd64 go build -o ${DIST_DIR}/${EXE_NAME}-mac-x64
 
 build-windows: init
-	go generate
-	env GOOS=windows GOARCH=386 go build -o ${DIST_DIR}/${EXE_NAME}-windows-x86
-	env GOOS=windows GOARCH=amd64 go build -o ${DIST_DIR}/${EXE_NAME}-windows-x64
+	go generate ./...
+	env GOOS=windows GOARCH=386 go build -o ${DIST_DIR}/${EXE_NAME}-windows-x86.exe
+	env GOOS=windows GOARCH=amd64 go build -o ${DIST_DIR}/${EXE_NAME}-windows-x64.exe
 
 clean:
 	if [ -d "${DIST_DIR}" ]; then rm -rvf ${DIST_DIR}; fi
