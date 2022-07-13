@@ -19,19 +19,14 @@ func main() {
 	appDir := filepath.Dir(exePath)
 	fmt.Println(appDir)
 	os.Chdir(appDir)
-	// httpClient := client.Init()
-	application := config.LoadConfigFile()
 
-	// status := client.CheckUpdateStatus(application, httpClient)
-	// fmt.Println(status)
-	jvmPath, err := config.FindJvmCommand(application, appDir)
+	jvmPath, err := config.FindJvmCommand(appDir)
 	if err != nil {
 		fmt.Println("Could not find java command")
 	}
-	fmt.Println(jvmPath)
 
-	args := config.GetCmdLineOptions(application)
-	fmt.Println(args)
+	args := config.GetCmdLineOptions()
+	fmt.Printf("Command line: %v\n", args)
 
 	binary := exec.Command(jvmPath, args...)
 
