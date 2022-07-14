@@ -104,7 +104,7 @@ func addModules() []string {
 
 func setClasspath() []string {
 	if len(classpath) > 0 {
-		return []string{"--class-path", strings.TrimSpace(classpath)}
+		return []string{"-classpath", strings.TrimSpace(classpath)}
 	}
 	return []string{}
 }
