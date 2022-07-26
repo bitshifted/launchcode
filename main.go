@@ -25,6 +25,15 @@ func main() {
 		fmt.Println("Could not find java command")
 	}
 
+	syncroArgs := config.GetSyncroCmdOptions()
+	fmt.Printf("Syncro args: %v\n", syncroArgs)
+	syncro := exec.Command(jvmPath, syncroArgs...)
+	syncroOut, err := syncro.CombinedOutput()
+	if err != nil {
+		panic("failed to run Syncro: " + err.Error())
+	}
+	fmt.Println(string(syncroOut))
+
 	args := config.GetCmdLineOptions()
 	fmt.Printf("Command line: %v\n", args)
 
