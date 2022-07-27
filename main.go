@@ -3,6 +3,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -22,7 +23,7 @@ func main() {
 
 	jvmPath, err := config.FindJvmCommand(appDir)
 	if err != nil {
-		fmt.Println("Could not find java command")
+		log.Println("Could not find java command")
 	}
 
 	syncroArgs := config.GetSyncroCmdOptions()
@@ -30,18 +31,18 @@ func main() {
 	syncro := exec.Command(jvmPath, syncroArgs...)
 	syncroOut, err := syncro.CombinedOutput()
 	if err != nil {
-		panic("failed to run Syncro: " + err.Error())
+		log.Printf("Failed to run syncro: %s\n", err.Error())
 	}
-	fmt.Println(string(syncroOut))
+	log.Println(string(syncroOut))
 
 	args := config.GetCmdLineOptions()
-	fmt.Printf("Command line: %v\n", args)
+	log.Printf("Command line: %v\n", args)
 
 	binary := exec.Command(jvmPath, args...)
 
 	out, execErr := binary.CombinedOutput()
 	if execErr != nil {
-		fmt.Println(execErr)
+		log.Printf("Error running Java process: %s\n", execErr.Error())
 	}
-	fmt.Println(string(out))
+	log.Println(string(out))
 }
