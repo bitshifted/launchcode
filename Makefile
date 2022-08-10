@@ -10,14 +10,14 @@ init:
 	mkdir -p ${DIST_DIR}
 
 build-linux: init
-	env GOOS=linux GOARCH=amd64 go build -o ${DIST_DIR}/${EXE_NAME}-linux
+	env GOOS=linux GOARCH=amd64 go build -trimpath -o ${DIST_DIR}/${EXE_NAME}-linux
 
 build-mac: init
-	env GOOS=darwin  GOARCH=amd64 go build -o ${DIST_DIR}/${EXE_NAME}-mac
+	env GOOS=darwin  GOARCH=amd64 go build -trimpath -o ${DIST_DIR}/${EXE_NAME}-mac
 
 build-windows: init
 	go generate ./...
-	env GOOS=windows GOARCH=amd64 go build -o ${DIST_DIR}/${EXE_NAME}-windows.exe
+	env GOOS=windows GOARCH=amd64 go build -trimpath -o ${DIST_DIR}/${EXE_NAME}-windows.exe
 
 clean:
 	if [ -d "${DIST_DIR}" ]; then rm -rvf ${DIST_DIR}; fi
