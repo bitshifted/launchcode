@@ -1,7 +1,7 @@
 package config
 
 const (
-	syncroMainClass = "co.bitshifted.xapps.syncro.Syncro"
+	syncroMainClass = "co.bitshifted.appforge.syncro.Syncro"
 )
 
 func GetSyncroCmdOptions() []string {
