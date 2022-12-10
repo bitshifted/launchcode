@@ -1,9 +1,12 @@
 package config
 
 const (
-	syncroMainClass = "co.bitshifted.xapps.syncro.Syncro"
+	syncroMainClass = "co.bitshifted.appforge.syncro.Syncro"
 )
 
 func GetSyncroCmdOptions() []string {
-	return []string{"-classpath", "cp/*", syncroMainClass}
+	options := make([]string, 0)
+	options = append(options, setSplashScreen()...)
+	options = append(options, []string{"-classpath", "cp/*", syncroMainClass}...)
+	return options
 }
