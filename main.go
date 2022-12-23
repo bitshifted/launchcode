@@ -11,6 +11,10 @@ import (
 	"github.com/bitshifted/launchcode/config"
 )
 
+const (
+	updateRetryCode = 10
+)
+
 func main() {
 	// get current application directory
 	exePath, err := os.Executable()
@@ -34,6 +38,11 @@ func main() {
 		log.Printf("Failed to run syncro: %s\n", err.Error())
 	}
 	log.Println(string(syncroOut))
+	exitCode := syncro.ProcessState.ExitCode()
+	log.Printf("Syncro exit code: %d\n", exitCode)
+	if exitCode == updateRetryCode {
+		processRetryFiles()
+	}
 
 	args := config.GetCmdLineOptions()
 	log.Printf("Command line: %v\n", args)
