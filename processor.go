@@ -111,9 +111,21 @@ func lineToEntry(line string) ProcessEntry {
 func processLauncherUpdate(entry ProcessEntry) {
 	log.Println("Processing launcher update")
 	oldPath := entry.targetPath + oldExtension
+	// check entry permissions
+	info, err := os.Stat(entry.targetPath)
+	if err != nil {
+		log.Printf("Could not stat file %s. Error: %s\n", entry.targetPath, err)
+	}
+	info.Mode()
 	os.Rename(entry.targetPath, oldPath)
 	log.Printf("Current launcher renamed to %s\n", oldPath)
 	launcherUpdated = true
+	// create new file
+	newFile, err := os.Create(entry.targetPath)
+	if err != nil {
+		log.Printf("Failed to create launcher copy: %s\n", err)
+	}
+	newFile.Chmod(info.Mode())
 }
 
 func cleanup(oldLaucnherFile string) {
