@@ -11,6 +11,11 @@ import (
 	"github.com/bitshifted/launchcode/config"
 )
 
+const (
+	updateRetryCode    = 10
+	skipUpdateArgument = "--skip-update"
+)
+
 func main() {
 	// get current application directory
 	exePath, err := os.Executable()
@@ -26,23 +31,43 @@ func main() {
 		log.Println("Could not find java command")
 	}
 
-	syncroArgs := config.GetSyncroCmdOptions()
-	fmt.Printf("Syncro args: %v\n", syncroArgs)
-	syncro := exec.Command(jvmPath, syncroArgs...)
-	syncroOut, err := syncro.CombinedOutput()
-	if err != nil {
-		log.Printf("Failed to run syncro: %s\n", err.Error())
+	// check if we need to run update
+	arguments := os.Args[1:]
+	if len(arguments) == 1 && arguments[0] == skipUpdateArgument {
+		log.Println("Skipping updte check")
+	} else {
+		syncroArgs := config.GetSyncroCmdOptions(exePath)
+		fmt.Printf("Syncro args: %v\n", syncroArgs)
+		syncro := exec.Command(jvmPath, syncroArgs...)
+		syncroOut, err := syncro.CombinedOutput()
+		if err != nil {
+			log.Printf("Failed to run syncro: %s\n", err.Error())
+		}
+		log.Println(string(syncroOut))
+		exitCode := syncro.ProcessState.ExitCode()
+		log.Printf("Syncro exit code: %d\n", exitCode)
+		if exitCode == updateRetryCode {
+			processRetryFiles(exePath)
+		}
 	}
-	log.Println(string(syncroOut))
 
-	args := config.GetCmdLineOptions()
-	log.Printf("Command line: %v\n", args)
+	if launcherUpdated {
+		log.Printf("Launchhing from new executable")
+		newCmd := exec.Command(exePath, skipUpdateArgument)
+		newCmd.Start()
 
-	binary := exec.Command(jvmPath, args...)
+	} else {
+		args := config.GetCmdLineOptions()
+		log.Printf("Command line: %v\n", args)
 
-	out, execErr := binary.CombinedOutput()
-	if execErr != nil {
-		log.Printf("Error running Java process: %s\n", execErr.Error())
+		binary := exec.Command(jvmPath, args...)
+
+		out, execErr := binary.CombinedOutput()
+		if execErr != nil {
+			log.Printf("Error running Java process: %s\n", execErr.Error())
+		}
+		log.Println(string(out))
 	}
-	log.Println(string(out))
+
+	go cleanup(exePath + ".old")
 }
