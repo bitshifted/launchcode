@@ -3,6 +3,7 @@ package config
 import (
 	_ "embed"
 	"fmt"
+	"log"
 	"path/filepath"
 	"runtime"
 	"strings"
@@ -36,10 +37,10 @@ var (
 
 func FindJvmCommand(appDir string) (string, error) {
 	jvmDir := calculateTargetJvmDir(appDir)
-	fmt.Println(jvmDir)
+	log.Printf("JVM directory: %s\n", jvmDir)
 	// attempt to find java executable
 	javaExecPath := findJavaExecutable(jvmDir)
-	fmt.Printf("java exec path: %s\n", javaExecPath)
+	log.Printf("java exec path: %s\n", javaExecPath)
 
 	return javaExecPath, nil
 

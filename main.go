@@ -17,13 +17,24 @@ const (
 )
 
 func main() {
+
 	// get current application directory
 	exePath, err := os.Executable()
 	if err != nil {
 		panic(err)
 	}
+	appName := filepath.Base(exePath)
+	// initialize logging to file
+	logFileName := fmt.Sprintf("%s-*.log", appName)
+	logFile, err := os.CreateTemp("", logFileName)
+	if err != nil {
+		fmt.Println("Failed to initialize log file")
+	} else {
+		log.SetOutput(logFile)
+	}
+
 	appDir := filepath.Dir(exePath)
-	fmt.Println(appDir)
+	log.Printf("Application directory: %s\n", appDir)
 	os.Chdir(appDir)
 
 	jvmPath, err := config.FindJvmCommand(appDir)
@@ -34,10 +45,10 @@ func main() {
 	// check if we need to run update
 	arguments := os.Args[1:]
 	if len(arguments) == 1 && arguments[0] == skipUpdateArgument {
-		log.Println("Skipping updte check")
+		log.Println("Skipping update check")
 	} else {
 		syncroArgs := config.GetSyncroCmdOptions(exePath)
-		fmt.Printf("Syncro args: %v\n", syncroArgs)
+		log.Printf("Syncro args: %v\n", syncroArgs)
 		syncro := exec.Command(jvmPath, syncroArgs...)
 		syncroOut, err := syncro.CombinedOutput()
 		if err != nil {
