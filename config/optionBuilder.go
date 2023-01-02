@@ -37,6 +37,9 @@ var (
 
 func FindJvmCommand(appDir string) (string, error) {
 	jvmDir := calculateTargetJvmDir(appDir)
+	if runtime.GOOS == "darwin" {
+		jvmDir = filepath.Join(appDir, jreDirPath)
+	}
 	log.Printf("JVM directory: %s\n", jvmDir)
 	// attempt to find java executable
 	javaExecPath := findJavaExecutable(jvmDir)

@@ -33,7 +33,7 @@ func main() {
 		log.SetOutput(logFile)
 	}
 
-	appDir := filepath.Dir(exePath)
+	appDir := config.GetAppBaseDirectory(exePath)
 	log.Printf("Application directory: %s\n", appDir)
 	os.Chdir(appDir)
 
