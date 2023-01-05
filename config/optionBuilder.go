@@ -37,9 +37,6 @@ var (
 
 func FindJvmCommand(appDir string) (string, error) {
 	jvmDir := calculateTargetJvmDir(appDir)
-	if runtime.GOOS == "darwin" {
-		jvmDir = filepath.Join(appDir, jreDirPath)
-	}
 	log.Printf("JVM directory: %s\n", jvmDir)
 	// attempt to find java executable
 	javaExecPath := findJavaExecutable(jvmDir)
@@ -50,6 +47,9 @@ func FindJvmCommand(appDir string) (string, error) {
 }
 
 func calculateTargetJvmDir(appDir string) string {
+	if runtime.GOOS == goOsMac {
+		return filepath.Join(appDir, jreDirPathMac)
+	}
 	return filepath.Join(appDir, DEFAULT_JAVA_DIR)
 
 }
@@ -81,7 +81,7 @@ func GetCmdLineOptions() []string {
 
 func setModulePath() []string {
 	if len(modulePath) > 0 {
-		return []string{"--module-path", strings.TrimSpace(modulePath)}
+		return []string{"--module-path", createPathWithPrefix(runtimeDirPathMac, modulePath)}
 	}
 	return []string{}
 
@@ -108,7 +108,7 @@ func addModules() []string {
 
 func setClasspath() []string {
 	if len(classpath) > 0 {
-		return []string{"-classpath", strings.TrimSpace(classpath)}
+		return []string{"-classpath", fmt.Sprintf("%s", createPathWithPrefix(runtimeDirPathMac, classpath))}
 	}
 	return []string{}
 }
@@ -144,8 +144,9 @@ func setJar() []string {
 
 func setSplashScreen() []string {
 	if len(splashScreen) > 0 && strings.HasPrefix(splashScreen, "-splash:") {
-
-		return []string{splashScreen}
+		parts := strings.Split(splashScreen, ":")
+		splashPath := createPathWithPrefix(macOsResourcesPath, parts[1])
+		return []string{fmt.Sprintf("-splash:%s", splashPath)}
 	}
 	return []string{}
 }

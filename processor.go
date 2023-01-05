@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -128,9 +129,17 @@ func processLauncherUpdate(entry ProcessEntry) {
 	newFile.Chmod(info.Mode())
 }
 
-func cleanup(oldLaucnherFile string) {
+func cleanup(oldLaucnherFile, appName string) {
 	time.Sleep(cleanupDelaySeconds * time.Second)
-	err := os.Remove(retryFilesName)
+	// initialize logging to file
+	logFileName := fmt.Sprintf("%s-cleanup-*.log", appName)
+	logFile, err := os.CreateTemp("", logFileName)
+	if err != nil {
+		fmt.Println("Failed to initialize log file")
+	} else {
+		log.SetOutput(logFile)
+	}
+	err = os.Remove(retryFilesName)
 	if err != nil {
 		log.Printf("Failed to delete file %s\n", retryFilesName)
 	}

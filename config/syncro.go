@@ -9,6 +9,7 @@ const (
 func GetSyncroCmdOptions(launcherFilePath string) []string {
 	options := make([]string, 0)
 	options = append(options, setSplashScreen()...)
-	options = append(options, []string{"-classpath", "cp/*", syncroMainClass, fmt.Sprintf("--launcher-file=%s", launcherFilePath)}...)
+	options = append(options, setClasspath()...)
+	options = append(options, []string{syncroMainClass, fmt.Sprintf("--launcher-file=%s", launcherFilePath)}...)
 	return options
 }
