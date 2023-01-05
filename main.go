@@ -33,7 +33,7 @@ func main() {
 		log.SetOutput(logFile)
 	}
 
-	appDir := filepath.Dir(exePath)
+	appDir := config.GetAppBaseDirectory(exePath)
 	log.Printf("Application directory: %s\n", appDir)
 	os.Chdir(appDir)
 
@@ -77,8 +77,8 @@ func main() {
 		if execErr != nil {
 			log.Printf("Error running Java process: %s\n", execErr.Error())
 		}
-		log.Println(string(out))
+		fmt.Println(string(out))
 	}
 
-	go cleanup(exePath + ".old")
+	go cleanup(exePath+".old", appName)
 }
