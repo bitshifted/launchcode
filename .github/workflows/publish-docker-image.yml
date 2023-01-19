@@ -28,7 +28,7 @@ jobs:
           git config user.name "GitHub Actions"
       - name: Calculate version
         run: |
-          VERSION=$(.cicd/version.sh)
+          VERSION=$(./cicd/version.sh)
           echo "Version: $VERSION"
           echo  "TAG_NAME=$VERSION" >> $GITHUB_ENV 
       - name: Setup Docker buildx
