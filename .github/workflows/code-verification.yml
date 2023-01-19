@@ -1,0 +1,17 @@
+name: Perform code verification
+on:
+  pull_request:
+    branches: [ master ]
+jobs:
+  build-and-test-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build and test
+        uses: addnab/docker-run-action@v3
+        with: 
+          image: golang:1.19.5-buster
+          options: -v ${{ github.workspace }}:/tmp
+          run: |
+            cd /tmp && make test && make all

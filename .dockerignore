@@ -1,0 +1,8 @@
+dist
+cicd
+.github
+.git
+.gitignore
+Dockerfile
+LICENSE
+README.md

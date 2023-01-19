@@ -1,0 +1,40 @@
+name: Publish to Docker Hub
+on:
+  push:
+    branches: [ master ]
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build and test
+        uses: addnab/docker-run-action@v3
+        with: 
+          image: golang:1.19.5-buster
+          options: -v ${{ github.workspace }}:/tmp
+          run: |
+            cd /tmp && make test && make all
+  publish-to-dockerhub:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Configure Git user
+        run: |
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+      - name: Calculate version
+        run: |
+          VERSION=$(.cicd/version.sh)
+          echo "Version: $VERSION"
+          echo  "TAG_NAME=$VERSION" >> $GITHUB_ENV 
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build Docker image
+        uses: docker/build-push-action@v3
+        with:
+          tags: bitshifted/launchcode:${{ env.TAG_NAME }}
+       

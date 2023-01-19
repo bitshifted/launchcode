@@ -21,6 +21,9 @@ build-windows: init
 	go generate ./...
 	env GOOS=windows GOARCH=amd64 go build -trimpath -o ${DIST_DIR}/${EXE_NAME}-windows-x64.exe
 
+test:
+	go test ./...
+
 clean:
 	if [ -d "${DIST_DIR}" ]; then rm -rvf ${DIST_DIR}; fi
 	if [ -f resource.syso ]; then rm resource.syso; fi
