@@ -12,6 +12,6 @@ jobs:
         uses: addnab/docker-run-action@v3
         with: 
           image: golang:1.19.5-buster
-          options: -v ${{ github.workspace }}:/tmp
+          options: -v ${{ github.workspace }}:/go/src
           run: |
-            cd /tmp && make test && make all
+            cd /go/src && make test && make all
