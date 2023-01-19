@@ -1,3 +1,5 @@
+[![Publish to Docker Hub](https://github.com/bitshifted/launchcode/actions/workflows/publish-docker-image.yml/badge.svg?branch=master)](https://github.com/bitshifted/launchcode/actions/workflows/publish-docker-image.yml)
+
 # Launchcode
 
 *Launchcode is part of [AppForge](https://github.com/bitshifted/appforge) platform.*
