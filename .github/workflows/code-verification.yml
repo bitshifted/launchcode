@@ -15,3 +15,9 @@ jobs:
           options: -v ${{ github.workspace }}:/go/src
           run: |
             cd /go/src && make test && make all
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build Docker image
+        uses: docker/build-push-action@v3
+        with:
+          tags: bitshifted/launchcode:latest
