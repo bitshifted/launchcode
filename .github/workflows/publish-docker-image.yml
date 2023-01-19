@@ -44,4 +44,8 @@ jobs:
         with:
           push: true
           tags: bitshifted/launchcode:${{ env.TAG_NAME }}
+      - name: Tag version
+        run: |
+          git tag  v${{ env.TAG_NAME }}
+          git push origin --tags
        
