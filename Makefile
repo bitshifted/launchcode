@@ -10,16 +10,16 @@ init:
 	mkdir -p ${DIST_DIR}
 
 build-linux: init
-	env GOOS=linux GOARCH=amd64 go build -trimpath -o ${DIST_DIR}/${EXE_NAME}-linux-x64
-	env GOOS=linux GOARCH=arm64 go build -trimpath -o ${DIST_DIR}/${EXE_NAME}-linux-aarch64
+	env GOOS=linux GOARCH=amd64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-linux-x64
+	env GOOS=linux GOARCH=arm64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-linux-aarch64
 
 build-mac: init
-	env GOOS=darwin  GOARCH=amd64 go build -trimpath -o ${DIST_DIR}/${EXE_NAME}-mac-x64
-	env GOOS=darwin  GOARCH=arm64 go build -trimpath -o ${DIST_DIR}/${EXE_NAME}-mac-aarch64
+	env GOOS=darwin  GOARCH=amd64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-mac-x64
+	env GOOS=darwin  GOARCH=arm64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-mac-aarch64
 
 build-windows: init
 	go generate ./...
-	env GOOS=windows GOARCH=amd64 go build -trimpath -o ${DIST_DIR}/${EXE_NAME}-windows-x64.exe
+	env GOOS=windows GOARCH=amd64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-windows-x64.exe
 
 test:
 	go test ./...
