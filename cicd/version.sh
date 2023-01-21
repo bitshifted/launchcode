@@ -32,7 +32,6 @@ fi
 SCRIPT_DIR=$( dirname -- "$0"; )
 # process last commit message
 MESSAGE=$(git log -1 --pretty=%B)
-echo "Commit message: $MESSAGE"
 if [[ "$MESSAGE" =~ $PATCH_REGEX ]]; then
   "$SCRIPT_DIR"/semver-bump.sh -p $LATEST_VERSION
 elif [[ "$MESSAGE" =~ $MINOR_REGEX ]]; then
