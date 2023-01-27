@@ -6,5 +6,7 @@ if [ -z $1 ];then
 fi
 
 TARGET_DIR=$1
-cp -rv /usr/src/launchcode $TARGET_DIR
+cp -rv /usr/src/launchcode/* $TARGET_DIR
+
+chown -Rv 1000:1000 $TARGET_DIR/*
 echo "Source code copied successfully"
