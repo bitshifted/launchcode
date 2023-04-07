@@ -8,10 +8,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Build and test
-        uses: addnab/docker-run-action@v3
+      - name: Setup Go
+        uses: actions/setup-go@v4
         with: 
-          image: golang:1.19.5-buster
-          options: -v ${{ github.workspace }}:/go/src
-          run: |
-            cd /go/src && make test && make all
+          go-version: '1.20'
+      - name: Build and test
+        run: |
+          make test

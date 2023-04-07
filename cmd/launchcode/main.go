@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/bitshifted/launchcode/config"
 )
@@ -17,14 +18,14 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	// appName := filepath.Base(exePath)
-	// initialize logging to file
-	// logFileName := fmt.Sprintf("%s-*.log", appName)
-	// logFile, err := os.CreateTemp("", logFileName)
+	appName := filepath.Base(exePath)
+	//initialize logging to file
+	logFileName := fmt.Sprintf("%s-*.log", appName)
+	logFile, err := os.CreateTemp("", logFileName)
 	if err != nil {
 		fmt.Println("Failed to initialize log file")
 	} else {
-		log.SetOutput(os.Stdout)
+		log.SetOutput(logFile)
 	}
 
 	appDir := config.GetAppBaseDirectory(exePath)

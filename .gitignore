@@ -15,6 +15,7 @@
 # vendor/
 
 dist/
+target/
 resource.syso
 application.xml
 .vscode/
