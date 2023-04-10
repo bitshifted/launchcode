@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 as base
+FROM ubuntu:22.04 AS base
 
 ENV GO_VERSION "1.20.3"
 ENV GO_ARCH "amd64"
@@ -13,7 +13,7 @@ RUN curl -O -L --proto "=https" --tlsv1.2  https://github.com/mikefarah/yq/relea
     chmod 755 /usr/bin/yq
 RUN useradd -m appuser
 
-FROM base as final
+FROM base AS final
 
 RUN mkdir -p /usr/src/launchcode
 
@@ -21,6 +21,7 @@ COPY ./ /usr/src/launchcode
 COPY target/launch-config /usr/bin
 COPY docker/build-launchers.sh /usr/bin/build-launchers
 
+RUN rm -rvf /usr/src/launchcode/target
 RUN chmod 755 /usr/bin/launch-config && chmod 755 /usr/bin/build-launchers && chown -Rv appuser:appuser /usr/src/launchcode
 RUN mkdir /workspace
 WORKDIR /workspace

@@ -8,13 +8,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Build and test
-        uses: addnab/docker-run-action@v3
+      - name: Setup Go
+        uses: actions/setup-go@v4
         with: 
-          image: golang:1.19.5-buster
-          options: -v ${{ github.workspace }}:/go/src
-          run: |
-            cd /go/src && make test && make all
+          go-version: '1.20'
+      - name: Build
+        run: |
+          make build-launch-config
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: launch-config-binary
+          path: target/launch-config
   publish-docker-image:
     needs: build-and-test
     runs-on: ubuntu-latest
@@ -26,6 +31,11 @@ jobs:
         run: |
           git config user.email "actions@github.com"
           git config user.name "GitHub Actions"
+      - name: Download binary artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: launch-config-binary
+          path: target/launch-config
       - name: Calculate version
         run: |
           VERSION=$(./cicd/version.sh)
