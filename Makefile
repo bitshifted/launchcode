@@ -30,15 +30,18 @@ build-launch-config: clean init-launch-config test
 	env GOOS=linux GOARCH=amd64 go build -trimpath -buildvcs=false -o ${TARGET_DIR}/launch-config
 
 build-linux: init-launchcode
-	env GOOS=linux GOARCH=amd64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-linux-x64
+	cd ${PROJECT_ROOT}/cmd/launchcode && \
+	env GOOS=linux GOARCH=amd64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-linux-x64 && \
 	env GOOS=linux GOARCH=arm64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-linux-aarch64
 
 build-mac: init-launchcode
-	env GOOS=darwin  GOARCH=amd64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-mac-x64
+	cd ${PROJECT_ROOT}/cmd/launchcode && \
+	env GOOS=darwin  GOARCH=amd64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-mac-x64 && \
 	env GOOS=darwin  GOARCH=arm64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-mac-aarch64
 
 build-windows: init-launchcode
-	go generate ./...
+	cd ${PROJECT_ROOT}/cmd/launchcode && \
+	go generate ./... && \
 	env GOOS=windows GOARCH=amd64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-windows-x64.exe
 
 

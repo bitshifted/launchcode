@@ -1,4 +1,4 @@
-//go:generate goversioninfo -icon=icons/launchcode.ico
+//go:generate goversioninfo
 package main
 
 import (

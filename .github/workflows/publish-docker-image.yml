@@ -15,7 +15,7 @@ jobs:
           options: -v ${{ github.workspace }}:/go/src
           run: |
             cd /go/src && make test && make all
-  publish-to-dockerhub:
+  publish-docker-image:
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:

@@ -18,6 +18,7 @@ mac:
   jre-dir: Contents/runtime/jre
   module-path: Contents/runtime/modules
 windows:
+  icon: test-icon.ico
   jvm-system-properties: |
     -Dwindows.foo=1 -Dwindows.bar=baz
   
