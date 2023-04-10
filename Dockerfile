@@ -5,9 +5,9 @@ ENV GO_ARCH "amd64"
 ENV PATH "$PATH:/usr/local/go/bin:/root/go/bin"
 
 RUN apt update && apt install -y --no-install-recommends curl jq make ca-certificates
-RUN curl -O -L -k "https://golang.org/dl/go${GO_VERSION}.linux-${GO_ARCH}.tar.gz" && \
+RUN curl -O -L "https://golang.org/dl/go${GO_VERSION}.linux-${GO_ARCH}.tar.gz" && \
     tar -C /usr/local -xzf go${GO_VERSION}.linux-${GO_ARCH}.tar.gz
-RUN curl -O -L -k https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
+RUN curl -O -L  https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 && \
     cp yq_linux_amd64 /usr/bin/yq && \
     chmod 755 /usr/bin/yq
 
