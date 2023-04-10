@@ -1,11 +1,18 @@
-[![Publish to Docker Hub](https://github.com/bitshifted/launchcode/actions/workflows/publish-docker-image.yml/badge.svg?branch=master)](https://github.com/bitshifted/launchcode/actions/workflows/publish-docker-image.yml)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bitshifted_launchcode&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=bitshifted_launchcode) 
+[![Publish Docker Image](https://github.com/bitshifted/launchcode/actions/workflows/publish-docker-image.yml/badge.svg?branch=master)](https://github.com/bitshifted/launchcode/actions/workflows/publish-docker-image.yml) 
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 # Launchcode
 
-*Launchcode is part of [AppForge](https://github.com/bitshifted/appforge) platform.*
+Launchcode is a native application launcher for Java based applications. It provides integration with target 
+operating system and gives more native look and feel to Java-based GUI applications.
 
-Launchcode is a native application launcher for AppForge based applications. It provides integration with target 
-operating system and makes mor native look and feel of cross-platform applications.
+Launchcode provides binaries for the following operating systems and CPU architectures:
+* Windows on Intel/AMD 64-bit CPUs
+* Mac on Intel and ARM 64-bit CPUs
+* Linux on Intel/AMD and ARM 64-bit CPUs
+
+For Windows launchers, it is possible to embed icon into executable.
 
 # License
 
@@ -15,7 +22,7 @@ Backstage is released under Mozilla Public License 2.0. See [LICENSE](./LICENSE)
 
 Launchode is written in Go. Requirements for the build:
 
-* Go 1.18 or higher
+* Go 1.20 or higher
 * make
 
 To build the binary for all supported platforms, run `make all`

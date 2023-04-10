@@ -1,0 +1,24 @@
+common:
+  jre-dir: runtime
+  jvm-options: -Xms=20m  -Xmx200m
+  jvm-system-properties: |
+    -Dsome.property=1 -Dfoo.bar=baz \
+    -Danother.property=x
+  splash-screen: splash-screen.png
+  classpath: classpath/dir/*
+  module-path: some-directory
+  add-modules: |
+    javafx.core javafx.graphics \
+    javafx.fxml
+  modules: mymodule/com.test.MainClass
+linux:
+  splash-screen: splash-linux.png
+  jvm-options: -Xms=10m  -Xmx=300m
+mac:
+  jre-dir: Contents/runtime/jre
+  module-path: Contents/runtime/modules
+windows:
+  icon: test-icon.ico
+  jvm-system-properties: |
+    -Dwindows.foo=1 -Dwindows.bar=baz
+  

@@ -9,10 +9,12 @@ import (
 	"strings"
 )
 
-const DEFAULT_JAVA_DIR = "jre"
+// const DEFAULT_JAVA_DIR = "jre"
 const DEFAULT_BIN_DIR = "bin"
 
 var (
+	//go:embed embed/jvm-dir
+	jvmDir string
 	//go:embed embed/jvmopts.txt
 	jvmOptions string
 	//go:embed embed/jvmprops.txt
@@ -47,10 +49,13 @@ func FindJvmCommand(appDir string) (string, error) {
 }
 
 func calculateTargetJvmDir(appDir string) string {
+	if filepath.IsAbs(jvmDir) {
+		return jvmDir
+	}
 	if runtime.GOOS == goOsMac {
 		return filepath.Join(appDir, jreDirPathMac)
 	}
-	return filepath.Join(appDir, DEFAULT_JAVA_DIR)
+	return filepath.Join(appDir, jvmDir)
 
 }
 
