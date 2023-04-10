@@ -1,5 +1,6 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=bitshifted_launchcode&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=bitshifted_launchcode) 
-[![Publish Docker Image](https://github.com/bitshifted/launchcode/actions/workflows/publish-docker-image.yml/badge.svg?branch=master)](https://github.com/bitshifted/launchcode/actions/workflows/publish-docker-image.yml)
+[![Publish Docker Image](https://github.com/bitshifted/launchcode/actions/workflows/publish-docker-image.yml/badge.svg?branch=master)](https://github.com/bitshifted/launchcode/actions/workflows/publish-docker-image.yml) 
+[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)
 
 # Launchcode
 
