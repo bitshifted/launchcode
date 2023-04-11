@@ -10,7 +10,7 @@ common:
   add-modules: |
     javafx.core javafx.graphics \
     javafx.fxml
-  modules: mymodule/com.test.MainClass
+  module: mymodule/com.test.MainClass
 linux:
   splash-screen: splash-linux.png
   jvm-options: -Xms=10m  -Xmx=300m
