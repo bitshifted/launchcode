@@ -18,12 +18,74 @@ For Windows launchers, it is possible to embed icon into executable.
 
 Backstage is released under Mozilla Public License 2.0. See [LICENSE](./LICENSE) file for details.
 
-# Building and running
+# Usage
 
-Launchode is written in Go. Requirements for the build:
+Launchcode is packaged as Docker image and can be run on any platform where DOcker is supported. To generate launchers for all platforms, run the following command:
 
-* Go 1.20 or higher
-* make
+```bash
+docker run -v ${PWD}:/workspace  ghcr.io/bitshifted/launchcode:<version> config-file.yaml
+```
 
-To build the binary for all supported platforms, run `make all`
- command.
+This command mounts the current directory into `/workspace` directory in container. Argument `config-file.yaml` is a configuration file for installers generation. It is assumed that configuration file is in a present directory.
+
+Generated installers will be placed in `dist` directory inside the current directory. Contents of this directory will look like this:
+
+```bash
+dist
+  |- launcher-linux-x64
+  |- launcher-linux-aarch64
+  |- launcher-mac-x64
+  |- launcher-mac-aarch64
+  |- launcher-win-x64.exe
+```
+
+## Configuration file reference
+
+This section outlines the available options for configuration. Configuration file is in YAML format. Example file is shown bellow:
+
+```yaml
+common:
+  jre-dir: runtime
+  jvm-options: -Xms=20m  -Xmx200m
+  jvm-system-properties: |
+    -Dsome.property=1 -Dfoo.bar=baz \
+    -Danother.property=x
+  splash-screen: splash-screen.png
+  classpath: classpath/dir/*
+  module-path: some-directory
+  add-modules: |
+    javafx.core javafx.graphics \
+    javafx.fxml
+  module: mymodule/com.test.MainClass
+linux:
+  splash-screen: splash-linux.png
+  jvm-options: -Xms=10m  -Xmx=300m
+mac:
+  jre-dir: Contents/runtime/jre
+  module-path: Contents/runtime/modules
+windows:
+  icon: test-icon.ico
+  jvm-system-properties: |
+    -Dwindows.foo=1 -Dwindows.bar=baz
+```
+
+There are 4 top level sections, which basically have the same options.
+* `common` - options for all platforms, unless overriden for specific platforms
+* `linux` - overrides common options on Linux
+* `mac` - overrides common options on Mac OS
+* `windows` - overrides common options on WIndows
+
+Configuration options:
+* `jre-dir` - location of JRE directory. It is assumes that path is relative to application root directory (on Mac OS, relative to bundle root)
+* `restart-code` - return code from Java application that will cause a restart
+* `jvm-options` - options to pass to Java VM
+* `jvm-system-properties` - system properties to pass to JVM
+* `splash-screen` - splash screen option to pass to JVM (ie. `--splash:image.png`)
+* `classpath` - application classpath
+* `module-path` - application module path
+* `add-modules` - list of modules to add to application
+* `module` - module to launch
+* `main-class` - application main class
+* `jar` - application JAR file
+* `arguments` - list of arguments to pass to application
+* `icon` - icon to embed in the launcher (applicable only on Windows)
