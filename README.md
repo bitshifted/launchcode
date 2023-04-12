@@ -46,6 +46,7 @@ This section outlines the available options for configuration. Configuration fil
 ```yaml
 common:
   jre-dir: runtime
+  restart-code: 20
   jvm-options: -Xms=20m  -Xmx200m
   jvm-system-properties: |
     -Dsome.property=1 -Dfoo.bar=baz \
@@ -78,7 +79,7 @@ There are 4 top level sections, which basically have the same options.
 
 Configuration options:
 * `jre-dir` - location of JRE directory. It is assumes that path is relative to application root directory (on Mac OS, relative to bundle root)
-* `restart-code` - return code from Java application that will cause a restart
+* `restart-code` - return code from Java application that will cause a restart. This is useful if you need to eg. restart after update
 * `jvm-options` - options to pass to Java VM
 * `jvm-system-properties` - system properties to pass to JVM
 * `splash-screen` - splash screen option to pass to JVM (ie. `--splash:image.png`)

@@ -25,6 +25,7 @@ const (
 	embedMainClass   = "mainclass.txt"
 	embedJar         = "jar.txt"
 	embedArgs        = "args.txt"
+	embedRestartCode = "restart-code"
 	shellRegex       = `\s+\\\s+`
 )
 
@@ -85,6 +86,10 @@ func (jo *JavaOptions) copyFrom(source JavaOptions) {
 func (jo *JavaOptions) writeConfig(directory string) error {
 	reg := regexp.MustCompile(shellRegex)
 	err := os.WriteFile(path.Join(directory, embedJvmDir), []byte(jo.JreDirectory), 0644)
+	if err != nil {
+		return err
+	}
+	err = os.WriteFile(path.Join(directory, embedRestartCode), []byte(fmt.Sprintf("%d", jo.RestartCode)), 0644)
 	if err != nil {
 		return err
 	}
