@@ -56,7 +56,8 @@ common:
   add-modules: |
     javafx.core javafx.graphics \
     javafx.fxml
-  module: mymodule/com.test.MainClass
+  module: mymodule
+  main-class: com.test.MainClass
 linux:
   splash-screen: splash-linux.png
   jvm-options: -Xms=10m  -Xmx=300m
@@ -84,7 +85,7 @@ Configuration options:
 * `classpath` - application classpath
 * `module-path` - application module path
 * `add-modules` - list of modules to add to application
-* `module` - module to launch
+* `module` - module to launch. This options requires `main-class` to be specified, so it can ba passed in form `mymodule/MyMainClass`
 * `main-class` - application main class
 * `jar` - application JAR file
 * `arguments` - list of arguments to pass to application
