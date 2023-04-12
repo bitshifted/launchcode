@@ -6,6 +6,7 @@ import (
 	"log"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"strings"
 )
 
@@ -35,6 +36,8 @@ var (
 	jar string
 	//go:embed embed/args.txt
 	arguments string
+	//go:embed embed/restart-code
+	restartCode string
 )
 
 func FindJvmCommand(appDir string) (string, error) {
@@ -82,6 +85,10 @@ func GetCmdLineOptions() []string {
 	options = append(options, setArguments()...)
 
 	return options
+}
+
+func GetRestartCode() (int, error) {
+	return strconv.Atoi(restartCode)
 }
 
 func setModulePath() []string {

@@ -12,7 +12,6 @@ import (
 )
 
 func main() {
-
 	// get current application directory
 	exePath, err := os.Executable()
 	if err != nil {
@@ -39,12 +38,33 @@ func main() {
 
 	args := config.GetCmdLineOptions()
 	log.Printf("Command line: %v\n", args)
-
-	binary := exec.Command(jvmPath, args...)
-
-	out, execErr := binary.CombinedOutput()
-	if execErr != nil {
-		log.Printf("Error running Java process: %s\n", execErr.Error())
+	restartCode, err := config.GetRestartCode()
+	if err != nil {
+		log.Printf("Failed to get restart code: %s\n", err)
 	}
-	fmt.Println(string(out))
+	restart := false
+	for {
+		binary := exec.Command(jvmPath, args...)
+
+		out, execErr := binary.CombinedOutput()
+		if execErr != nil {
+			restart = shouldRestart(execErr, restartCode)
+		}
+		fmt.Println(string(out))
+		if !restart {
+			break
+		}
+	}
+
+}
+
+func shouldRestart(err error, restartCode int) bool {
+	code := 0
+	if exitError, ok := err.(*exec.ExitError); ok {
+		code = exitError.ExitCode()
+	} else {
+		log.Printf("Error running Java process: %s\n", err)
+		return false
+	}
+	return (restartCode != 0 && code == restartCode)
 }
