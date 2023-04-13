@@ -23,10 +23,12 @@ Backstage is released under Mozilla Public License 2.0. See [LICENSE](./LICENSE)
 Launchcode is packaged as Docker image and can be run on any platform where DOcker is supported. To generate launchers for all platforms, run the following command:
 
 ```bash
-docker run -v ${PWD}:/workspace  ghcr.io/bitshifted/launchcode:<version> config-file.yaml
+docker run -v ${PWD}:/workspace  ghcr.io/bitshifted/launchcode:<version> config-file.yaml [output-dir]
 ```
 
 This command mounts the current directory into `/workspace` directory in container. Argument `config-file.yaml` is a configuration file for installers generation. It is assumed that configuration file is in a present directory.
+
+Argument `output-dir` is the directory where generated launchers will be placed. This argument is optional. If not specified, default directory `dist` will be used.
 
 Generated installers will be placed in `dist` directory inside the current directory. Contents of this directory will look like this:
 
