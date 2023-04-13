@@ -6,12 +6,17 @@ LAUNCHCODE_EMBED_DIR=$LAUNCHCODE_SRC_DIR/config/embed
 LINUX_CONFIG_DIR=${PWD}/output/linux
 MAC_CONFIG_DIR=${PWD}/output/mac
 WINDOWS_CONFIG_DIR=${PWD}/output/windows
-DIST_DIR=dist
 DEFAULT_ICON="launchcode.ico"
+ORIGIN_DIST_DIR=dist
+DIST_DIR=$2
 
 if [ -z $1 ];then
     echo "Usage: build-launchers <config-file>"
     exit 1
+fi
+
+if [ -z $DIST_DIR ];then
+    DIST_DIR="dist"
 fi
 
 echo "Using configuration file $1"
@@ -30,7 +35,7 @@ echo "Linux launcher built successfully!"
 echo "Building Mac OS launchers..."
 rm -v $LAUNCHCODE_EMBED_DIR/*
 cp $MAC_CONFIG_DIR/* $LAUNCHCODE_EMBED_DIR
-make build-mac
+make build-mac 
 echo "Mac OS launcher built sucessfully"
 
 echo "Building Windows launchers..."
@@ -52,7 +57,8 @@ make build-windows
 echo "Windows launcher built sucessfully"
 
 cd $WORKDIR
-cp -rv /usr/src/launchcode/$DIST_DIR .
+mkdir -p $DIST_DIR
+cp -rv /usr/src/launchcode/$ORIGIN_DIST_DIR/* ./$DIST_DIR
 OWNER_ID=$(stat -c %u $1)
 GROUP_ID=$(stat -c %g $1)
 chown -R $OWNER_ID:$GROUP_ID $DIST_DIR
