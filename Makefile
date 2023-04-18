@@ -42,7 +42,7 @@ build-mac: init-launchcode
 build-windows: init-launchcode
 	cd ${PROJECT_ROOT}/cmd/launchcode && \
 	go generate ./... && \
-	env GOOS=windows GOARCH=amd64 go build -trimpath  -buildvcs=false -o ${DIST_DIR}/${EXE_NAME}-windows-x64.exe
+	env GOOS=windows GOARCH=amd64 go build -trimpath  -buildvcs=false -ldflags -H=windowsgui -o ${DIST_DIR}/${EXE_NAME}-windows-x64.exe
 
 
 clean:
