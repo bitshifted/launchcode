@@ -37,6 +37,7 @@ jobs:
         uses: bitshifted/git-auto-semver@v1
         with:
           main_branch: 'master'
+          create_tag: true
       - name: Download binary artifact
         uses: actions/download-artifact@v3
         with:
@@ -65,8 +66,4 @@ jobs:
             BUILD_VERSION=${{ steps.calculate-version.outputs.version-string }}
             VCS_REF=${{ github.sha }}
           tags: ghcr.io/bitshifted/launchcode:${{ steps.calculate-version.outputs.version-string }}
-      - name: Tag version
-        run: |
-          git tag  v${{ steps.calculate-version.outputs.version-string }};
-          git push origin --tags
        
