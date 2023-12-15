@@ -15,6 +15,21 @@ RUN useradd -m appuser
 
 FROM base AS final
 
+ARG BUILD_DATE
+ARG VCS_REF
+ARG BUILD_VERSION
+
+# Labels.
+LABEL org.label-schema.schema-version="1.0"
+LABEL org.label-schema.build-date=$BUILD_DATE
+LABEL org.label-schema.name="bitshifted/launchcode"
+LABEL org.label-schema.description="Generates launchers for Java applications"
+LABEL org.label-schema.url="https://github.com/bitshifted/launchcode"
+LABEL org.label-schema.vcs-url="https://github.com/bitshifted/launchcode"
+LABEL org.label-schema.vcs-ref=$VCS_REF
+LABEL org.label-schema.vendor="Bitshift"
+LABEL org.label-schema.version=$BUILD_VERSION
+
 RUN mkdir -p /usr/src/launchcode
 
 COPY ./ /usr/src/launchcode

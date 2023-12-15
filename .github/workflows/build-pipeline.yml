@@ -1,5 +1,7 @@
-name: Publish to Docker Hub
+name: Build pipeline
 on:
+  pull_request:
+    branches: [ master ]
   push:
     branches: [ master ]
 jobs:
@@ -16,31 +18,30 @@ jobs:
         run: |
           make build-launch-config
       - name: Upload artifact
+        if: ${{ github.event_name == 'push' }}
         uses: actions/upload-artifact@v3
         with:
           name: launch-config-binary
           path: target/launch-config
   publish-docker-image:
+    if:  ${{ github.event_name == 'push' }}
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Configure Git user
-        run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
+          fetch-tags: true
+      - name: Calculate version
+        id: calculate-version
+        uses: bitshifted/git-auto-semver@v1
+        with:
+          main_branch: 'master'
       - name: Download binary artifact
         uses: actions/download-artifact@v3
         with:
           name: launch-config-binary
           path: target/launch-config
-      - name: Calculate version
-        run: |
-          VERSION=$(./cicd/version.sh)
-          echo "Version: $VERSION"
-          echo  "TAG_NAME=$VERSION" >> $GITHUB_ENV 
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@v2
       - name: Login to Github Docker registry
@@ -49,14 +50,23 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build timestamp
+        id: docker-build-timestamp
+        run: |
+          TIMESTAMP=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+          echo "ts_value=$TIMESTAMP" >> $GITHUB_OUTPUT
       - name: Build Docker image
         uses: docker/build-push-action@v3
         with:
           push: true
           context: .
-          tags: ghcr.io/bitshifted/launchcode:${{ env.TAG_NAME }}
+          build-args: |
+            BUILD_DATE=${{ steps.docker-build-timestamp.outputs.ts_value }}
+            BUILD_VERSION=${{ steps.calculate-version.outputs.version-string }}
+            VCS_REF=${{ github.sha }}
+          tags: ghcr.io/bitshifted/launchcode:${{ steps.calculate-version.outputs.version-string }}
       - name: Tag version
         run: |
-          git tag  v${{ env.TAG_NAME }}
+          git tag  v${{ steps.calculate-version.outputs.version-string }};
           git push origin --tags
        
